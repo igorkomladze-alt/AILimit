@@ -10,6 +10,32 @@
 
 **Preview release.** Live readings from Codex, Kimi, GLM and OpenRouter have been verified on one Mac. Claude has test coverage, but live verification is incomplete. Provider API changes may break integrations.
 
+<p align="center">
+  <img src="docs/images/panel-light.png" width="280" alt="AI Limits light appearance, demo data" />
+  &nbsp;&nbsp;
+  <img src="docs/images/panel-dark.png" width="280" alt="AI Limits dark appearance, demo data" />
+</p>
+
+*Real interface rendered with synthetic demo data. No personal accounts or balances were used.*
+
+## Download for Mac
+
+**[Download AI Limits v0.1.0 — ZIP](https://github.com/igorkomladze-alt/AILimit/releases/download/v0.1.0/AI-Limits-macOS.zip)** · [SHA256](https://github.com/igorkomladze-alt/AILimit/releases/download/v0.1.0/SHA256SUMS.txt) · [Release notes](https://github.com/igorkomladze-alt/AILimit/releases/tag/v0.1.0)
+
+The prebuilt app needs no Xcode or Homebrew. Requires **macOS 14+ and Apple Silicon**.
+
+1. Unzip the download and move **AI Limits.app** to **Applications**.
+2. Open the app. If macOS cannot verify the developer, after attempting to launch it, go to **System Settings → Privacy & Security → Open Anyway**, only if you trust the downloaded file. [Apple's instructions](https://support.apple.com/en-us/102445).
+3. Click the menu-bar icon → gear and connect your own services.
+
+**Ad-hoc signed preview; no Developer ID or notarization.** This is not an Apple-verified build. Do not disable Gatekeeper/SIP. If your Mac's policy prevents launch, use the source-build instructions below.
+
+To verify the ZIP, put it next to `SHA256SUMS.txt` and run:
+
+```bash
+shasum -a 256 -c SHA256SUMS.txt
+```
+
 ## Features
 
 - Compact panel with separate quota windows and additional Codex limit groups.
@@ -18,11 +44,11 @@
 - Custom JSON APIs and a built-in DeepSeek balance preset.
 - Secrets in Keychain; no model generation requests just to measure usage.
 
-## Quick start
+## Build from source
 
 Requires **Apple Silicon (M1+)**, **macOS 14+**, full **Xcode with Swift 6**, and **XcodeGen**. Command Line Tools alone are insufficient. Local validation used macOS 27 beta / Xcode 27 beta / XcodeGen 2.46; macOS 14 has not been separately tested. Windows and Linux are not supported.
 
-Installation is currently from source. Install and open Xcode, complete its initial setup, and select it under **Xcode → Settings → Locations → Command Line Tools**. If Homebrew is already installed:
+To build it yourself, install and open Xcode, complete its initial setup, and select it under **Xcode → Settings → Locations → Command Line Tools**. If Homebrew is already installed:
 
 ```bash
 brew install xcodegen

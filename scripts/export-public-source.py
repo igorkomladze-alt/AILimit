@@ -11,7 +11,8 @@ TREES = {'App': {'.swift', '.json', '.png', '.svg', '.plist'},
 FILES = ['scripts/package-app.sh', 'scripts/check-bundle.sh', 'scripts/check-privacy.sh',
          'scripts/render-icon.swift', 'scripts/check-distribution.py',
          'scripts/export-public-source.py', 'docs/service-logo-sources.md',
-         'docs/provider-sources.md']
+         'docs/provider-sources.md', 'scripts/render-preview.sh', 'scripts/render-preview.swift',
+         'docs/images/panel-light.png', 'docs/images/panel-dark.png', 'docs/images/social-preview.png']
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)

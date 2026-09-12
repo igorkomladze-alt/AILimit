@@ -10,6 +10,32 @@
 
 **Предварительный выпуск.** Живое чтение Codex, Kimi, GLM и OpenRouter проверено на одном Mac; Claude покрыт тестами, но живая проверка не завершена. API провайдеров могут измениться.
 
+<p align="center">
+  <img src="docs/images/panel-light.png" width="280" alt="AI Limits light appearance, demo data" />
+  &nbsp;&nbsp;
+  <img src="docs/images/panel-dark.png" width="280" alt="AI Limits dark appearance, demo data" />
+</p>
+
+*Снимки реального интерфейса с искусственными демоданными. Личные аккаунты и балансы не использовались.*
+
+## Скачать для Mac
+
+**[Скачать AI Limits v0.1.0 — ZIP](https://github.com/igorkomladze-alt/AILimit/releases/download/v0.1.0/AI-Limits-macOS.zip)** · [SHA256](https://github.com/igorkomladze-alt/AILimit/releases/download/v0.1.0/SHA256SUMS.txt) · [Описание выпуска](https://github.com/igorkomladze-alt/AILimit/releases/tag/v0.1.0)
+
+Для готового приложения Xcode и Homebrew не нужны. Требуются **macOS 14+ и Apple Silicon**.
+
+1. Распакуйте ZIP и перенесите **AI Limits.app** в папку **Программы**.
+2. Откройте приложение. Если macOS сообщает, что разработчика нельзя проверить, после попытки запуска откройте **Системные настройки → Конфиденциальность и безопасность → Всё равно открыть** — только если доверяете скачанному файлу. [Инструкция Apple](https://support.apple.com/102445).
+3. Нажмите значок в строке меню → шестерёнку и подключите свои сервисы.
+
+**Предварительная сборка с ad-hoc подписью, без Developer ID и notarization.** Подпись не является проверкой Apple. Не отключайте Gatekeeper/SIP. Если политика вашего Mac не позволяет запуск, используйте сборку из исходников ниже.
+
+Для проверки ZIP положите его рядом с `SHA256SUMS.txt` и выполните:
+
+```bash
+shasum -a 256 -c SHA256SUMS.txt
+```
+
 ## Возможности
 
 - Компактная панель, отдельные периоды лимитов и дополнительные группы Codex.
@@ -18,11 +44,11 @@
 - Свои JSON API и готовый шаблон баланса DeepSeek.
 - Секреты в Keychain; без генерации запросов к моделям ради статистики.
 
-## Быстрый старт
+## Сборка из исходников
 
 Требуются **Apple Silicon (M1+)**, **macOS 14+**, полный **Xcode со Swift 6** и **XcodeGen**. Одних Command Line Tools недостаточно. Локальная проверка проведена на macOS 27 beta / Xcode 27 beta / XcodeGen 2.46; macOS 14 отдельно не проверена. Windows и Linux не поддерживаются.
 
-Установка пока только из исходников. Установите и откройте Xcode, завершите первоначальную настройку и выберите его в **Xcode → Settings → Locations → Command Line Tools**. Если Homebrew уже установлен:
+Для самостоятельной сборки установите и откройте Xcode, завершите первоначальную настройку и выберите его в **Xcode → Settings → Locations → Command Line Tools**. Если Homebrew уже установлен:
 
 ```bash
 brew install xcodegen
