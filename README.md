@@ -1,6 +1,6 @@
 # AI Limits
 
-**English** | [Русский](README.ru.md)
+**English** | [Russian](README.ru.md)
 
 [![CI](https://github.com/igorkomladze-alt/AILimit/actions/workflows/build.yml/badge.svg)](https://github.com/igorkomladze-alt/AILimit/actions/workflows/build.yml)
 [![MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
@@ -16,7 +16,7 @@
   <img src="docs/images/panel-dark.png" width="280" alt="AI Limits dark appearance, demo data" />
 </p>
 
-*Real interface rendered with synthetic demo data. No personal accounts or balances were used.*
+*Real interface rendered with synthetic demo data. Screenshots show the current Russian-language app; no personal accounts or balances were used.*
 
 ## Download for Mac
 
@@ -75,10 +75,12 @@ The local build uses ad-hoc signing; there is no Developer ID signature or notar
 
 Connect any subset of providers. Enter keys **only in the application UI**, never in source files, `.env`, or Issues.
 
+Button and menu names below are English translations. The app currently displays Russian labels; the [Russian guide](README.ru.md) includes their on-screen wording.
+
 | Provider | Requirements and connection |
 |---|---|
-| Codex | A ChatGPT subscription with Codex access and the [official Codex CLI](https://learn.chatgpt.com/docs/cli). Click “Войти через Codex” (Sign in with Codex) and complete browser sign-in. |
-| Claude | Claude Code and Claude Pro/Max or eligible organizational access. Run `claude auth login --claudeai`, then click “Разрешить и подключить” (Allow and connect). Live verification is incomplete. |
+| Codex | A ChatGPT subscription with Codex access and the [official Codex CLI](https://learn.chatgpt.com/docs/cli). Click **Sign in with Codex** and complete browser sign-in. |
+| Claude | Claude Code and Claude Pro/Max or eligible organizational access. Run `claude auth login --claudeai`, then click **Allow and connect**. Live verification is incomplete. |
 | Kimi Code | A **Kimi Code** key, not a Moonshot API key, or a valid Kimi CLI login. Enter the key or allow access to the local login. |
 | GLM / Z.ai | An international personal **Coding Plan** key. BigModel CN and API balances are unsupported. |
 | OpenRouter | A **Management Key**. GET `/api/v1/credits` reads the account balance. |
@@ -89,11 +91,11 @@ OpenRouter Management Keys have broader privileges than balance reading; the app
 
 ## Custom services and DeepSeek
 
-Click **+** in the panel or open **Настройки → Свои сервисы** (Settings → Custom services).
+Click **+** in the panel or open **Settings → Custom services**.
 
-**DeepSeek example:** choose **DeepSeek — баланс API** (DeepSeek — API balance), enter your API key, and click **Проверить и сохранить** (Test and save). The preset fills in the endpoint and fields; currency (`CNY` or `USD`) comes from the response. This is an API money balance, not a subscription quota.
+**DeepSeek example:** choose **DeepSeek — API balance**, enter your API key, and click **Test and save**. The preset fills in the endpoint and fields; currency (`CNY` or `USD`) comes from the response. This is an API money balance, not a subscription quota.
 
-For **Свой JSON API** (Custom JSON API), supply a name, an HTTPS statistics URL, and authentication: none, Bearer, or X-API-Key. Only GET is supported, without URL query parameters, user credentials, fragments, redirects, or browser cookies.
+For **Custom JSON API**, supply a name, an HTTPS statistics URL, and authentication: none, Bearer, or X-API-Key. Only GET is supported, without URL query parameters, user credentials, fragments, redirects, or browser cookies.
 
 - Up to **20 services** and **8 metrics** per service: remaining/used percentage, money, or remaining/used amounts against a total limit.
 - Paths: `data.remaining_percent` selects a nested field; `balance_infos.0.total_balance` selects a field in the first array item. Values may be JSON numbers or numeric strings.
@@ -111,7 +113,7 @@ Keys stay in Keychain; definitions and normalized readings are stored locally in
 ## Readings and settings
 
 - Percentages show **remaining** quota. Zero differs from “No data.” Five-hour and seven-day windows are not added together.
-- The primary Codex limit appears first; “Ещё лимиты” (More limits) expands additional groups. OpenRouter displays USD.
+- The primary Codex limit appears first; **More limits** expands additional groups. OpenRouter displays USD.
 - Errors preserve the last snapshot with a warning. Reaching a reset time does not automatically set the remaining quota to 100%.
 - Built-in providers refresh every 5 minutes with at most three concurrent requests; custom services refresh serially. Errors and Retry-After increase the delay; manual refresh does not bypass it.
 - Notification thresholds: 20% / 5%, and strictly below $3 for OpenRouter; warnings and recovery can be configured per provider.

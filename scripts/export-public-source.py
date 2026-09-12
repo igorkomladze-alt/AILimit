@@ -5,13 +5,13 @@ import shutil
 from pathlib import Path
 
 ROOT_FILES = ['.gitignore', 'Package.swift', 'project.yml', 'README.md', 'README.ru.md', 'LICENSE',
-              'THIRD_PARTY_NOTICES.md', 'CONTRIBUTING.md']
+              'THIRD_PARTY_NOTICES.md', 'CONTRIBUTING.md', 'CONTRIBUTING.ru.md']
 TREES = {'App': {'.swift', '.json', '.png', '.svg', '.plist'},
          'Sources': {'.swift'}, 'Tests': {'.swift'}, '.github': {'.yml'}}
 FILES = ['scripts/package-app.sh', 'scripts/check-bundle.sh', 'scripts/check-privacy.sh',
          'scripts/render-icon.swift', 'scripts/check-distribution.py',
          'scripts/export-public-source.py', 'docs/service-logo-sources.md',
-         'docs/provider-sources.md', 'scripts/render-preview.sh', 'scripts/render-preview.swift',
+         'docs/provider-sources.md', 'docs/provider-sources.ru.md', 'docs/service-logo-sources.ru.md', 'scripts/render-preview.sh', 'scripts/render-preview.swift',
          'docs/images/panel-light.png', 'docs/images/panel-dark.png', 'docs/images/social-preview.png']
 
 if __name__ == '__main__':

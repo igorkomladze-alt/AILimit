@@ -1,17 +1,27 @@
-# Участие в разработке
+# Contributing
 
-Обсуждения и Issues приветствуются. Для воспроизведения ошибки укажите macOS,
-сервис, способ подключения и ожидаемое поведение. Не публикуйте ключи, cookies,
-email, auth.json, личные снимки лимитов или файлы из Application Support.
+**English** | [Russian](CONTRIBUTING.ru.md)
 
-Перед Pull Request выполните `swift test`, `bash scripts/package-app.sh` и
-`bash scripts/check-bundle.sh`. Для исправлений парсеров используйте синтетические
-ответы, не реальные данные аккаунта. Проверяйте светлую/тёмную темы и размеры
-панели, если меняете интерфейс. Не выполняйте платные генерации для проверки квот.
+Issues and discussions are welcome. To report a problem, include your macOS
+version, provider, connection method, expected behavior, and what happened.
+Never publish keys, cookies, email addresses, `auth.json`, personal quota
+snapshots, or files from Application Support.
 
-Сохраняйте независимость подключений, read-only доступ к чужим CLI credentials,
-строгое ограничение доменов и отсутствие секретов в логах. Изменения схемы
-кэша должны сохранять совместимость либо явно описывать миграцию.
+Before opening a pull request, run:
 
-Не добавляйте новые зависимости без необходимости. Авторские логотипы и торговые
-знаки не покрываются лицензией MIT на код — сохраняйте указание их источников.
+```bash
+swift test
+bash scripts/package-app.sh
+bash scripts/check-bundle.sh
+```
+
+Use synthetic responses for parser tests, not real account data. For UI
+changes, check light and dark appearances and the panel dimensions. Do not
+make paid generation requests just to verify quota readings.
+
+Preserve independent provider connections, read-only access to other CLI
+credentials, strict endpoint restrictions, and secret-free logs. Cache schema
+changes must preserve compatibility or explicitly document a migration.
+
+Add dependencies only when needed. Provider logos and trademarks are not
+covered by the code's MIT license; retain their source attribution.

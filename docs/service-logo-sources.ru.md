@@ -1,9 +1,9 @@
-# Provider logo sources
+# Логотипы сервисов
 
-**English** | [Russian](service-logo-sources.ru.md)
+[English](service-logo-sources.md) | **Русский**
 
-Original assets obtained from provider websites on September 12, 2026.
-Used to identify integrations; trademarks belong to their respective owners.
+Оригинальные файлы с сайтов сервисов, получены 12.09.2026.
+Используются для идентификации интеграций; права на знаки принадлежат владельцам.
 
 - claude: https://assets.claude.com/95a868946ac8a31e5ff832e2899f294aa368b836.png?w=32&h=32
 - codex: https://developers.openai.com/favicon.png

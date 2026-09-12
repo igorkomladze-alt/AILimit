@@ -151,6 +151,6 @@ bash scripts/check-privacy.sh
 python3 scripts/check-distribution.py
 ```
 
-CI на macOS проверяет исходники, тесты и упаковку; текущий результат — по значку наверху. Настоящие аккаунты и секреты не нужны. Тесты не доказывают работу живых API. Правила участия — [CONTRIBUTING.md](CONTRIBUTING.md).
+CI на macOS проверяет исходники, тесты и упаковку; текущий результат — по значку наверху. Настоящие аккаунты и секреты не нужны. Тесты не доказывают работу живых API. Правила участия — [CONTRIBUTING.md](CONTRIBUTING.ru.md).
 
 Код — [MIT](LICENSE). Логотипы принадлежат владельцам сервисов: [источники и уведомления](THIRD_PARTY_NOTICES.md). Проект не аффилирован с OpenAI, Anthropic, Moonshot, Z.ai или OpenRouter.
