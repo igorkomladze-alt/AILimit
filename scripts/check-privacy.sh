@@ -5,6 +5,11 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 fail=0
+# ZIP downloads have no Git metadata; inspect the actual distribution instead.
+repo_root="$(git rev-parse --show-toplevel 2>/dev/null || true)"
+if [[ "$repo_root" != "$PWD" ]]; then
+  python3 scripts/check-distribution.py
+else
 # 1. Не должно быть .reference/, auth.json, логов среди tracked files.
 for pattern in ".reference/" "auth.json" "*.log" ".env"; do
   if [[ -n "$(git ls-files -- "$pattern")" ]]; then
@@ -17,6 +22,8 @@ done
 if git grep -q "kimi-at-123\|kimi-rt-secret" -- ':!*/Tests/*' ':!Tests/*' ':!scripts/check-privacy.sh' 2>/dev/null; then
   echo "FAIL: test secrets outside tests" >&2
   fail=1
+fi
+
 fi
 
 # 3. Privacy/Endpoint тесты должны проходить.

@@ -7,9 +7,15 @@ cd "$(dirname "$0")/.."
 
 # Сборка через xcodegen + xcodebuild (отклонение от SPM-продукта задокументировано
 # в docs/source-audit.md; приёмка Task 2 — запускаемая .app — выполняется).
+command -v xcodegen >/dev/null || { echo "Install XcodeGen first: brew install xcodegen" >&2; exit 1; }
 xcodegen generate >/dev/null
-xcodebuild -project AILimits.xcodeproj -scheme AILimits -configuration Release -destination "platform=macOS,arch=arm64" build \
-  -derivedDataPath build/DerivedData >/dev/null
+mkdir -p build
+if ! xcodebuild -project AILimits.xcodeproj -scheme AILimits -configuration Release -destination "platform=macOS,arch=arm64" build \
+  -derivedDataPath build/DerivedData >build/package-build.log 2>&1; then
+  grep -n -A 10 -B 2 'error:' build/package-build.log >&2 || true
+  tail -n 40 build/package-build.log >&2
+  exit 1
+fi
 
 bin_dir="build/DerivedData/Build/Products/Release"
 app="$PWD/build/AI Limits.app"
