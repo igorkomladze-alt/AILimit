@@ -1,174 +1,123 @@
 # AI Limits
 
-Компактное приложение для строки меню macOS: остатки лимитов **Codex,
-Claude, Kimi Code, GLM / Z.ai** и баланс **OpenRouter** в одной панели.
-Каждый пользователь подключает свои аккаунты на своём Mac.
+**English** | [Русский](README.ru.md)
 
-Панель шириной 280 px, светлая и тёмная темы, раздельные периоды лимитов,
-сохранение снимков, автоматическое обновление и настраиваемые уведомления.
-Интерфейс на русском. Приложение не выполняет генерации ради статистики.
+[![CI](https://github.com/igorkomladze-alt/AILimit/actions/workflows/build.yml/badge.svg)](https://github.com/igorkomladze-alt/AILimit/actions/workflows/build.yml)
+[![MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+![macOS 14+ · Apple Silicon](https://img.shields.io/badge/macOS-14%2B%20%C2%B7%20Apple%20Silicon-black)
 
-**Статус: предварительный выпуск.** Живое чтение Codex, Kimi, GLM и OpenRouter
-проверено на одном Mac. Claude покрыт тестами, но живая приёмка не завершена.
-Изменения API провайдеров могут нарушить интеграции.
+**Codex, Claude, Kimi Code, GLM / Z.ai** limits and your **OpenRouter** balance in the macOS menu bar. Connect your own accounts on your own Mac. The application interface is currently in Russian.
 
-## Требования
+**Preview release.** Live readings from Codex, Kimi, GLM and OpenRouter have been verified on one Mac. Claude has test coverage, but live verification is incomplete. Provider API changes may break integrations.
 
-- Mac с Apple Silicon (M1 или новее).
-- macOS 14 или новее. Проверка на устройстве проведена на macOS 27 beta;
-  отдельная проверка на macOS 14 не выполнена.
-- Для сборки: **полный Xcode** со Swift 6 и XcodeGen. Одних Command Line Tools
-  недостаточно. Проверенная локальная конфигурация: Xcode 27 beta, XcodeGen 2.46.
-  Совместимость со стабильными версиями Xcode проверяется отдельно в CI.
-- Интернет и подходящая подписка/ключ выбранного сервиса.
+## Features
 
-**Windows и Linux не поддерживаются.** Не нужны Docker, сервер, VPS или своя БД.
+- Compact panel with separate quota windows and additional Codex limit groups.
+- Automatic refresh, last-known snapshots on errors, light and dark themes.
+- Configurable notifications and launch at login, both off by default.
+- Custom JSON APIs and a built-in DeepSeek balance preset.
+- Secrets in Keychain; no model generation requests just to measure usage.
 
-## Установка из исходников
+## Quick start
 
-1. Установите Xcode из App Store или с сайта Apple Developer. Откройте Xcode
-   хотя бы один раз, завершите первоначальную настройку и выберите его в
-   **Xcode → Settings → Locations → Command Line Tools**.
-2. Установите XcodeGen. Если у вас уже есть Homebrew:
+Requires **Apple Silicon (M1+)**, **macOS 14+**, full **Xcode with Swift 6**, and **XcodeGen**. Command Line Tools alone are insufficient. Local validation used macOS 27 beta / Xcode 27 beta / XcodeGen 2.46; macOS 14 has not been separately tested. Windows and Linux are not supported.
 
-   ```bash
-   brew install xcodegen
-   ```
+Installation is currently from source. Install and open Xcode, complete its initial setup, and select it under **Xcode → Settings → Locations → Command Line Tools**. If Homebrew is already installed:
 
-   Установка Homebrew не выполняется приложением. Альтернативы описаны в
-   [документации XcodeGen](https://github.com/yonaskolb/XcodeGen#installing).
-3. Скачайте исходники через **Code → Download ZIP**, распакуйте и откройте
-   Терминал в папке проекта. Либо клонируйте публичный репозиторий:
+```bash
+brew install xcodegen
+```
 
-   ```bash
-   git clone https://github.com/igorkomladze-alt/AILimit.git
-   cd AILimit
-   ```
+See [XcodeGen installation](https://github.com/yonaskolb/XcodeGen#installing) for alternatives. Then:
 
-4. Проверьте инструменты и соберите приложение:
+```bash
+git clone https://github.com/igorkomladze-alt/AILimit.git
+cd AILimit
+xcodebuild -version
+swift --version
+xcodegen --version
+swift test
+bash scripts/package-app.sh
+bash scripts/check-bundle.sh
+```
 
-   ```bash
-   xcodebuild -version
-   swift --version
-   xcodegen --version
-   swift test
-   bash scripts/package-app.sh
-   bash scripts/check-bundle.sh
-   ```
+Open `build` in Finder, move **AI Limits.app** to your **Applications** folder, and launch it. Click its menu-bar icon, then the gear to configure connections.
 
-5. В Finder откройте папку `build`. Перенесите **AI Limits.app** в папку
-   **Программы** своего пользователя и запустите. В строке меню появится значок.
-   Нажмите шестерёнку для подключений и настроек.
+The local build uses ad-hoc signing; there is no Developer ID signature or notarization. If macOS warns you, use its standard confirmation for opening a trusted application. Do not disable Gatekeeper/SIP or broadly remove quarantine attributes.
 
-Сборка локально подписывается ad-hoc. Developer ID и notarization отсутствуют.
-При предупреждении macOS пользуйтесь штатным подтверждением открытия доверенного
-приложения; не отключайте Gatekeeper/SIP и не удаляйте массово quarantine-атрибуты.
+## Connect providers
 
-## Подключение своих аккаунтов
+Connect any subset of providers. Enter keys **only in the application UI**, never in source files, `.env`, or Issues.
 
-Можно подключить любое подмножество сервисов. Ключи вводятся **только в UI**;
-не добавляйте их в исходники, `.env`, Issues или отчёты об ошибках.
+| Provider | Requirements and connection |
+|---|---|
+| Codex | A ChatGPT subscription with Codex access and the [official Codex CLI](https://learn.chatgpt.com/docs/cli). Click “Войти через Codex” (Sign in with Codex) and complete browser sign-in. |
+| Claude | Claude Code and Claude Pro/Max or eligible organizational access. Run `claude auth login --claudeai`, then click “Разрешить и подключить” (Allow and connect). Live verification is incomplete. |
+| Kimi Code | A **Kimi Code** key, not a Moonshot API key, or a valid Kimi CLI login. Enter the key or allow access to the local login. |
+| GLM / Z.ai | An international personal **Coding Plan** key. BigModel CN and API balances are unsupported. |
+| OpenRouter | A **Management Key**. GET `/api/v1/credits` reads the account balance. |
 
-| Сервис | Что нужно | Как подключить |
-|---|---|---|
-| Codex | Подписка ChatGPT с доступом к Codex и официальный Codex CLI | Установите CLI по [инструкции OpenAI](https://learn.chatgpt.com/docs/cli), затем нажмите «Войти через Codex» и завершите вход в браузере |
-| Claude | Claude Code и отдельная подписка Claude Pro/Max либо подходящий организационный доступ | Выполните `claude auth login --claudeai` в Терминале, затем «Разрешить и подключить» в AI Limits |
-| Kimi Code | Ключ **Kimi Code**, не Moonshot API, либо действующий вход Kimi CLI | Введите ключ или разрешите чтение локального входа CLI |
-| GLM / Z.ai | Ключ международного персонального **Coding Plan** | Введите ключ; BigModel CN и API-баланс не поддерживаются |
-| OpenRouter | **Management Key** | Введите ключ; запрос `/api/v1/credits` читает баланс аккаунта |
+Codex CLI is searched for at `/opt/homebrew/bin/codex`, `/usr/local/bin/codex`, and `~/.local/bin/codex`; the app does not install it automatically. ChatGPT Pro and Claude Pro are separate subscriptions.
 
-Codex CLI ищется в `/opt/homebrew/bin/codex`, `/usr/local/bin/codex` и
-`~/.local/bin/codex`. Приложение не устанавливает CLI автоматически.
-ChatGPT Pro и Claude Pro — разные подписки.
+OpenRouter Management Keys have broader privileges than balance reading; the app only uses a statistics GET request. Claude and Kimi CLI credentials are read with permission. Their refresh tokens are not refreshed by this app: sign in again through the official CLI when needed.
 
-Management Key OpenRouter имеет более широкие права, чем чтение баланса;
-приложение использует только GET-запрос статистики. Claude и Kimi CLI читаются
-только после разрешения. AI Limits не обновляет их чужие refresh tokens:
-при истечении входа войдите снова через официальный CLI.
+## Custom services and DeepSeek
 
-## Добавить свой сервис
+Click **+** in the panel or open **Настройки → Свои сервисы** (Settings → Custom services).
 
-Нажмите **+** в компактной панели или откройте **Настройки → Свои сервисы**.
+**DeepSeek example:** choose **DeepSeek — баланс API** (DeepSeek — API balance), enter your API key, and click **Проверить и сохранить** (Test and save). The preset fills in the endpoint and fields; currency (`CNY` or `USD`) comes from the response. This is an API money balance, not a subscription quota.
 
-- Шаблон **DeepSeek — баланс API** заполняет адрес и поля; нужен только ваш ключ.
-  Валюта берётся из ответа (`CNY` или `USD`), баланс не считается лимитом подписки.
-- **Свой JSON API**: укажите название, HTTPS URL статистики и способ авторизации
-  (без ключа, Bearer или X-API-Key). Поддерживаются только GET-запросы без
-  query-параметров, логина/пароля в URL, перенаправлений и браузерных cookies.
-- Для каждого показателя задайте название и путь к числу в JSON. Поддерживаются
-  остаток/расход в процентах, денежный баланс и остаток/расход относительно общего
-  лимита. Можно добавить до 8 показателей на сервис и до 20 своих сервисов.
-- Путь `data.remaining_percent` означает вложенное поле; `balance_infos.0.total_balance`
-  — поле первого элемента массива. Числа могут быть JSON-числами или строками.
-  Для валюты можно указать константу либо путь к полю; дата сброса — ISO 8601
-  или Unix-время в секундах.
-- Нажмите **Проверить и сохранить**. Только после успешного GET и проверки полей
-  подключение сохраняется. На ошибке старое подключение остаётся.
+For **Свой JSON API** (Custom JSON API), supply a name, an HTTPS statistics URL, and authentication: none, Bearer, or X-API-Key. Only GET is supported, without URL query parameters, user credentials, fragments, redirects, or browser cookies.
 
-Пример искусственного ответа для настройки процентов:
+- Up to **20 services** and **8 metrics** per service: remaining/used percentage, money, or remaining/used amounts against a total limit.
+- Paths: `data.remaining_percent` selects a nested field; `balance_infos.0.total_balance` selects a field in the first array item. Values may be JSON numbers or numeric strings.
+- Currency: a constant or field path. Reset time: ISO 8601 or Unix seconds.
+- Saving requires a successful GET and field validation; an error preserves the previous connection.
+
+Synthetic response for configuring a percentage metric:
 
 ```json
 {"data":{"remaining_percent":72,"resets_at":"2026-10-01T00:00:00Z"}}
 ```
 
-Это не автоматическая поддержка любого сайта: Cursor, Copilot и другие сервисы
-без подходящего API или с отдельным OAuth требуют специальных адаптеров.
-Свои сервисы пока поддерживают мониторинг без пороговых уведомлений. Ключи
-хранятся в Keychain, определения и нормализованные значения — локально в
-`custom-services.json`. При редактировании пустой ключ сохраняет прежний
-только для прежнего адреса сервера; для нового сервера введите ключ заново.
+Keys stay in Keychain; definitions and normalized readings are stored locally in `custom-services.json`. When editing, a blank key preserves the existing key only for the same server address; enter a new key for a different server.
 
-## Что означают цифры
+## Readings and settings
 
-- Проценты — **остаток**, не расход. Ноль отличается от «Нет данных».
-- 5 часов / 7 дней — периоды учёта. Они не выбираются как режим и не суммируются.
-- У Codex основной лимит показан первым. Дополнительные группы раскрываются
-  кнопкой «Ещё лимиты». Их имена приходят от сервера; неизвестные технические
-  идентификаторы не расшифровываются предположениями.
-- OpenRouter показывает деньги в USD, а не процент подписки.
-- При ошибке остаётся последний снимок с предупреждением. Наступление времени
-  сброса само по себе не превращает остаток в 100%.
+- Percentages show **remaining** quota. Zero differs from “No data.” Five-hour and seven-day windows are not added together.
+- The primary Codex limit appears first; “Ещё лимиты” (More limits) expands additional groups. OpenRouter displays USD.
+- Errors preserve the last snapshot with a warning. Reaching a reset time does not automatically set the remaining quota to 100%.
+- Built-in providers refresh every 5 minutes with at most three concurrent requests; custom services refresh serially. Errors and Retry-After increase the delay; manual refresh does not bypass it.
+- Notification thresholds: 20% / 5%, and strictly below $3 for OpenRouter; warnings and recovery can be configured per provider.
+- System, light, or dark appearance; hide disconnected providers; optional launch at login.
 
-## Настройки
+## Privacy and removal
 
-- Обновление каждые 5 минут, максимум три параллельных запроса. Ошибки и
-  Retry-After увеличивают задержку, ручное обновление не обходит ограничения.
-- Уведомления исходно выключены. Пороги: 20% / 5%, OpenRouter строго ниже $3.
-  Можно отдельно настроить предупреждения и восстановление по сервисам.
-- Автозапуск исходно выключен; включается в настройках приложения.
-- Системное, светлое или тёмное оформление; скрытие отключённых сервисов.
+Keys use the system Keychain under `local.gutfresh.AILimits`, without iCloud synchronization. Snapshots and settings live in `~/Library/Application Support/AILimits`. These are private local data: do not send them to the developer or add them to the repository.
 
-## Приватность и удаление
+Codex uses a dedicated `CODEX_HOME` inside that directory and a keyring; other applications’ logins are not copied. Browser cookies are not read. There is no app backend, telemetry, or cloud synchronization; authentication and statistics requests go to providers.
 
-Ключи хранятся в системной Связке ключей, namespace `local.gutfresh.AILimits`,
-без синхронизации iCloud. Снимки и настройки уведомлений — в
-`~/Library/Application Support/AILimits`. Это **локальные личные данные**,
-их не нужно копировать в репозиторий или передавать разработчику.
+To uninstall, disconnect services and disable launch at login, quit the app, and move it to Trash. Optionally remove `~/Library/Application Support/AILimits` manually. Do not remove `~/.codex`, `~/.claude`, or `~/.kimi-code`: they belong to other applications.
 
-Вход Codex использует собственный `CODEX_HOME` внутри этого каталога и
-keyring. Вход других приложений не копируется. Браузерные cookies не читаются.
-Собственного сервера, телеметрии и облачной синхронизации у AI Limits нет;
-авторизация и запросы статистики идут в сервисы провайдеров.
+## Troubleshooting
 
-Для удаления сначала отключите сервисы в AI Limits и выключите автозапуск,
-затем завершите приложение и перенесите его в Корзину. При необходимости
-удалите каталог `~/Library/Application Support/AILimits` вручную. Не удаляйте
-`~/.codex`, `~/.claude` или `~/.kimi-code`: они принадлежат другим приложениям.
+| Symptom | Check |
+|---|---|
+| `xcodebuild requires Xcode` | Select full Xcode in Settings → Locations. |
+| `xcodegen: command not found` | Install XcodeGen and build again. |
+| Codex CLI not found | Check `command -v codex` and the supported paths above. |
+| Claude will not connect | Repeat `claude auth login --claudeai` and allow reading credentials in the app. |
+| 401 / 403 | Check your subscription and key type; sign in again if needed. |
+| 429 | Wait for the next attempt; manual refresh does not bypass the delay. |
+| Unexpected readings | Compare with the provider dashboard; report the provider, macOS version, and error text. |
 
-## Если не работает
+Redact email, balance, and other personal data in Issues. Never share keys, `auth.json`, or cookies.
 
-- `xcodebuild requires Xcode`: выберите полный Xcode в настройках Locations.
-- `xcodegen: command not found`: установите XcodeGen и повторите сборку.
-- Codex CLI не найден: проверьте `command -v codex` и поддерживаемые пути выше.
-- Claude не подключается: войдите через `claude auth login --claudeai`, затем
-  разрешите чтение в AI Limits. Поддержка живого Claude ещё проверяется.
-- 401/403: проверьте подписку, тип ключа или выполните вход повторно.
-- 429: дождитесь времени следующей попытки. Частые нажатия «Обновить» не помогут.
-- Неверные периоды или значения: сравните с кабинетом и сообщите название
-  сервиса, версию macOS и текст ошибки. Скройте email, баланс и другие личные
-  данные на скриншотах. Никогда не присылайте ключи, auth.json или cookies.
+## Known limitations
 
-## Разработка и лицензия
+macOS / Apple Silicon only; Russian application UI only. Live Claude access and the minimum macOS version are not yet verified. Custom services do not support threshold notifications. Sites without a suitable JSON API and separate OAuth flows need dedicated adapters. Provider API changes may interrupt readings.
+
+## Development and license
 
 ```bash
 swift test
@@ -176,9 +125,6 @@ bash scripts/check-privacy.sh
 python3 scripts/check-distribution.py
 ```
 
-CI проверяет исходники, тесты и упаковку на macOS. Настоящие аккаунты и
-секреты для CI не нужны. Зелёные тесты не доказывают работу всех живых API.
+CI on macOS checks source, tests, and packaging; see the badge above for its current result. Real accounts and secrets are not required. Passing tests do not establish live API compatibility. See [CONTRIBUTING.md](CONTRIBUTING.md) to contribute.
 
-Код — [MIT](LICENSE). Логотипы остаются собственностью владельцев сервисов;
-[источники и уведомления](THIRD_PARTY_NOTICES.md). Проект не аффилирован с
-OpenAI, Anthropic, Moonshot, Z.ai или OpenRouter.
+Code is licensed under [MIT](LICENSE). Provider logos belong to their respective owners; see [sources and notices](THIRD_PARTY_NOTICES.md). This project is not affiliated with OpenAI, Anthropic, Moonshot, Z.ai, or OpenRouter.

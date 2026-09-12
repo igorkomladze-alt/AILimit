@@ -4,7 +4,7 @@ import argparse
 import shutil
 from pathlib import Path
 
-ROOT_FILES = ['.gitignore', 'Package.swift', 'project.yml', 'README.md', 'LICENSE',
+ROOT_FILES = ['.gitignore', 'Package.swift', 'project.yml', 'README.md', 'README.ru.md', 'LICENSE',
               'THIRD_PARTY_NOTICES.md', 'CONTRIBUTING.md']
 TREES = {'App': {'.swift', '.json', '.png', '.svg', '.plist'},
          'Sources': {'.swift'}, 'Tests': {'.swift'}, '.github': {'.yml'}}

@@ -24,20 +24,27 @@ struct CompactPanelView: View {
     }
 
     private var contentHeight: CGFloat {
-        guard !cards.isEmpty || !model.customServices.entries.isEmpty else { return 62 }
-        let customHeight = model.customServices.entries.reduce(CGFloat(0)) { sum, entry in
+        let customEntries = model.customServices.entries
+        guard !cards.isEmpty || !customEntries.isEmpty else { return 62 }
+        var height: CGFloat = 0
+        for entry in customEntries {
             let count = min(entry.snapshot?.metrics.count ?? 0, 2)
-            return sum + CGFloat(30 + max(1, count) * 29 + (entry.error == nil ? 0 : 16)
-                                 + ((entry.snapshot?.metrics.count ?? 0) > 2 ? 18 : 0))
+            height += 30 + CGFloat(max(1, count)) * 29
+            if entry.error != nil { height += 16 }
+            if (entry.snapshot?.metrics.count ?? 0) > 2 { height += 18 }
         }
-        return customHeight + cards.reduce(CGFloat(0)) { sum, card in
+        for card in cards {
             let count = quotas(card).count
-            let extra = (card.snapshot?.quotas.count ?? 0) > count || expanded.contains(card.provider) ? 16 : 0
-            let balance = card.snapshot?.balanceUSD != nil ? 20 : 0
-            let empty = card.isConnected && card.snapshot == nil ? 28 : 0
-            let error = card.lastError != nil && card.snapshot != nil ? 28 : 0
-            return sum + CGFloat(26 + count * 26 + extra + balance + empty + error)
-        } + CGFloat(max(0, cards.count + model.customServices.entries.count - 1) * 4)
+            height += 26 + CGFloat(count) * 26
+            if (card.snapshot?.quotas.count ?? 0) > count || expanded.contains(card.provider) {
+                height += 16
+            }
+            if card.snapshot?.balanceUSD != nil { height += 20 }
+            if card.isConnected && card.snapshot == nil { height += 28 }
+            if card.lastError != nil && card.snapshot != nil { height += 28 }
+        }
+        let gaps = max(0, cards.count + customEntries.count - 1)
+        return height + CGFloat(gaps) * 4
     }
 
     var body: some View {
