@@ -1,0 +1,48 @@
+name: macOS build
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: macos-15
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Verify public sources
+        run: python3 scripts/check-distribution.py
+      - name: Install build tool
+        run: brew install xcodegen
+      - name: Show toolchain
+        run: |
+          uname -m
+          xcodebuild -version
+          swift --version
+          xcodegen --version
+      - name: Run tests
+        run: swift test
+      - name: Check privacy boundaries
+        run: bash scripts/check-privacy.sh
+      - name: Build application
+        run: bash scripts/package-app.sh
+      - name: Verify bundle
+        run: bash scripts/check-bundle.sh
+      - name: Archive application
+        run: |
+          ditto -c -k --keepParent "build/AI Limits.app" build/AI-Limits-macOS.zip
+          shasum -a 256 build/AI-Limits-macOS.zip > build/SHA256SUMS.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: AI-Limits-macOS
+          path: |
+            build/AI-Limits-macOS.zip
+            build/SHA256SUMS.txt
+          if-no-files-found: error
